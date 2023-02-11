@@ -11,4 +11,6 @@ public class OrderEvent {
     private Integer eventId;
     private Order order;
 
+    private EventType type;
+
 }
