@@ -5,5 +5,7 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
       #value-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      # none, gzip, lz4, snappy, and zstd
+      compression-type: none
     template:
       default-topic: orders
