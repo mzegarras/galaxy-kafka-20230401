@@ -3,6 +3,7 @@ package cloud.csonic.orderproducer.service;
 import cloud.csonic.orderlibrary.event.OrderEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -60,6 +61,33 @@ public class OrderServiceImpl implements OrderService {
                 handleOk(key,orderEvent,result);
             }
         });
+    }
+
+    @Override
+    public void publishV3(OrderEvent orderEvent) {
+
+        var key = orderEvent.getEventId();
+
+        var record = buildRecord(key,orderEvent,topicName);
+
+        var response = kafkaTemplate.send(record);
+        response.addCallback(new ListenableFutureCallback<SendResult<Integer, OrderEvent>>() {
+            @Override
+            public void onFailure(Throwable ex) {
+
+            }
+
+            @Override
+            public void onSuccess(SendResult<Integer, OrderEvent> result) {
+
+                handleOk(key,orderEvent,result);
+            }
+        });
+
+    }
+
+    private ProducerRecord<Integer,OrderEvent> buildRecord(Integer key, OrderEvent orderEvent, String topicName) {
+        return new ProducerRecord<>(topicName,null,key,orderEvent,null);
     }
 
     private void handleOk(Integer key, OrderEvent orderEvent, SendResult<Integer, OrderEvent> result) {
