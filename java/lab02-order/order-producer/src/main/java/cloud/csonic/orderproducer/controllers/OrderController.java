@@ -28,7 +28,7 @@ public class OrderController {
                 .order(order)
                 .build();
 
-        orderService.publish(orderEvent);
+        orderService.publishV2(orderEvent);
 
         return "ok";
     }
