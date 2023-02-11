@@ -5,9 +5,10 @@ import cloud.csonic.orderlibrary.domain.Order;
 import cloud.csonic.orderlibrary.event.OrderEvent;
 import cloud.csonic.orderproducer.service.OrderService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 @RequestMapping("/orders")
 @RestController
 @AllArgsConstructor
@@ -32,4 +33,16 @@ public class OrderController {
 
         return "ok";
     }
+
+    @PostMapping
+    public ResponseEntity<OrderEvent> postOrder(@RequestBody OrderEvent orderEvent){
+
+        orderService.publishV2(orderEvent);
+
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(orderEvent);
+    }
+
+
 }
