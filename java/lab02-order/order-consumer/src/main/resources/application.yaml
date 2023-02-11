@@ -1,4 +1,7 @@
 spring:
+  data.mongodb:
+    uri: mongodb://root:password1234@localhost:27017/orderdb?authSource=admin
+    database: orderdb
   kafka:
     bootstrap-servers: localhost:29092,localhost:29093,localhost:29094
     consumer:
