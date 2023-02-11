@@ -1,5 +1,6 @@
 package cloud.csonic.orderconsumer.consumers;
 
+import cloud.csonic.orderconsumer.data.OrderEntity;
 import cloud.csonic.orderconsumer.respository.OrderRepository;
 import cloud.csonic.orderlibrary.event.OrderEvent;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,14 @@ public class OrderConsumer {
     @KafkaListener(topics = "orders",groupId = "consumerjava01")
     public void processMessage(OrderEvent orderEvent){
 
-        //orderRepository.save()
+        log.info("mensaje recibido");
+
+        var entity = new OrderEntity();
+        entity.setId(orderEvent.getOrder().getId());
+        entity.setAmout(orderEvent.getOrder().getAmout());
+        entity.setCustomerId(orderEvent.getOrder().getCustomerId());
+        orderRepository.save(entity);
+
         log.info(orderEvent.toString());
 
     }
