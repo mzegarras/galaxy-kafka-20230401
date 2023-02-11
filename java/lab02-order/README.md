@@ -53,6 +53,18 @@ curl --location --request POST 'http://localhost:8080/orders' \
     }
 }'
 
+curl --location --request POST 'http://localhost:8080/orders' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "eventId":9903,
+    "order":{
+        "id":"1",
+        "customerId":"C001",
+        "amout":100
+    }
+}'
+
+
 curl --location --request PUT 'http://localhost:8080/orders' \
 --header 'Content-Type: application/json' \
 --data-raw '{
