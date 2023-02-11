@@ -39,7 +39,7 @@ public class OrderController {
     public ResponseEntity<OrderEvent> postOrder(@RequestBody OrderEvent orderEvent){
 
         orderEvent.setType(EventType.NEW);
-        orderService.publishV2(orderEvent);
+        orderService.publishV3(orderEvent);
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
@@ -56,7 +56,7 @@ public class OrderController {
         }
 
         orderEvent.setType(EventType.UPDATE);
-        orderService.publishV2(orderEvent);
+        orderService.publishV3(orderEvent);
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
