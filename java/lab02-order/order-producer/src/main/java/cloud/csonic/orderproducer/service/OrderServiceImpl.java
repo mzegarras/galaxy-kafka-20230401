@@ -26,8 +26,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void publish(OrderEvent orderEvent) {
-        var response = kafkaTemplate.sendDefault(orderEvent);
+
         var key = orderEvent.getEventId();
+        var response = kafkaTemplate.sendDefault(key,orderEvent);
 
         response.addCallback(new ListenableFutureCallback<SendResult<Integer, OrderEvent>>() {
             @Override
@@ -44,6 +45,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void handleOk(Integer key, OrderEvent orderEvent, SendResult<Integer, OrderEvent> result) {
-        log.info("mensaje enviado");
+        log.info("mensaje enviado: key:{} - value:{} - partition: {} - offset {}",key,orderEvent,
+                result.getRecordMetadata().partition(),
+                result.getRecordMetadata().offset());
     }
 }

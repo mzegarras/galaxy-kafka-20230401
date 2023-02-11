@@ -24,7 +24,7 @@ public class OrderController {
                 .build();
 
         var orderEvent = OrderEvent.builder()
-                .eventId(null)
+                .eventId(1001)
                 .order(order)
                 .build();
 
