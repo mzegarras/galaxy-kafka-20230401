@@ -93,6 +93,7 @@ public class OrderServiceImpl implements OrderService {
 
         var record = buildRecord(key,orderEvent,topicName);
 
+        //kafkaTemplate.send(record);
         var response = kafkaTemplate.send(record);
         response.addCallback(new ListenableFutureCallback<SendResult<Integer, OrderEvent>>() {
             @Override
