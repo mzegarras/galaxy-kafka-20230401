@@ -1,6 +1,9 @@
 package cloud.csonic.orderconsumer.consumers;
 
+import cloud.csonic.orderconsumer.data.OrderEntity;
+import cloud.csonic.orderconsumer.respository.OrderRepository;
 import cloud.csonic.orderlibrary.event.OrderEvent;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -10,7 +13,9 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@AllArgsConstructor
 public class OrderConsumerManual implements AcknowledgingMessageListener<String, OrderEvent> {
+    private final OrderRepository orderRepository;
 
     @Override
     @KafkaListener(topics = {"orders"})
@@ -22,5 +27,23 @@ public class OrderConsumerManual implements AcknowledgingMessageListener<String,
         // SI LA ORDEN NO EXISTE, LA REGISTRAN.
         // SI LA EXISTE LA IGNORAN.
         //acknowledgment.acknowledge(); //mensaje procesado
+
+        log.info("ConsumerRecord Manual: {}",consumerRecord);
+
+        var orderEvent = consumerRecord.value();
+
+        var orderDB = orderRepository.findById(orderEvent.getOrder().getId());
+
+        if(!orderDB.isPresent()){
+
+            var entity = new OrderEntity();
+            entity.setId(orderEvent.getOrder().getId());
+            entity.setAmout(orderEvent.getOrder().getAmout());
+            entity.setCustomerId(orderEvent.getOrder().getCustomerId());
+            orderRepository.save(entity);
+        }
+
+        acknowledgment.acknowledge();
+
     }
 }
