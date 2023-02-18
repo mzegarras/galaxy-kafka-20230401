@@ -63,6 +63,9 @@ class OrderServiceImplTest {
         //VALIDACIONES
         var result = listeneableFeature.get();
         assertEquals(1,result.getRecordMetadata().partition());
+        assertEquals(1001,result.getProducerRecord().key());
+
+
         verify(kafkaTemplate).send(producerRecord);
         verifyNoMoreInteractions(kafkaTemplate);
     }
