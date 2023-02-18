@@ -140,5 +140,5 @@ kafka-console-consumer \
 --from-beginning
 
 kafka-consumer-groups --bootstrap-server localhost:9092 --list
-kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group galaxy-consumer-02
+kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group galaxy-consumer
 ```
