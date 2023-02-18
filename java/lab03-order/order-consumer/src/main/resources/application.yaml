@@ -5,12 +5,15 @@ spring:
     database: ordersdb
   kafka:
     bootstrap-servers: localhost:29092,localhost:29093,localhost:29094
+    listener:
+      ack-mode: manual
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       group-id: galaxy-consumer
       auto-offset-reset: earliest
       properties:
+        enabled.auto.commit: false
         spring.json.trusted.packages: '*'
 server:
   port: 9080
