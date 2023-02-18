@@ -10,9 +10,18 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class OrderConsumer {
 
-    @KafkaListener(topics = {"orders"})
+   @KafkaListener(topics = {"orders"})
    public void processMessage(ConsumerRecord<String,OrderEvent> record){
         log.info("record: {}",record);
    }
 
+    /*@KafkaListener(topics = {"orders"})
+    public void processMessageV2(ConsumerRecord<String,OrderEvent> record){
+        log.info("record: {}",record);
+    }*/
+
+    /*@KafkaListener(topics = {"orders"})
+    public void processMessageV2(OrderEvent orderEvent){
+        log.info("OrderEvent: {}",orderEvent);
+    }*/
 }

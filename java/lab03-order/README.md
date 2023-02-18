@@ -136,9 +136,9 @@ docker exec --interactive --tty kafka01 bash
 kafka-console-consumer \
 --bootstrap-server kafka01:9092 \
 --topic orders  \
---group "consumer01" \
+--group "galaxy-consumer-02" \
 --from-beginning
 
 kafka-consumer-groups --bootstrap-server localhost:9092 --list
-kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group consumer01
+kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group galaxy-consumer-02
 ```
