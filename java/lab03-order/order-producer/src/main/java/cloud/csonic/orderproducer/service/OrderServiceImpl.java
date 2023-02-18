@@ -7,6 +7,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.util.concurrent.ExecutionException;
@@ -42,14 +43,6 @@ public class OrderServiceImpl implements OrderService{
             }
         });
 
-        /*try {
-            kafkaTemplate.send("weblog",orderEvent).get();
-            log.info("mensaje enviado");
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        }*/
 
     }
 
@@ -106,6 +99,30 @@ public class OrderServiceImpl implements OrderService{
                 handleOk(key,event,result);
             }
         });
+    }
+
+    @Override
+    public ListenableFuture<SendResult<Integer, OrderEvent>> publishV4(OrderEvent event) {
+
+        var key = event.getEventId();
+
+        var record = buildProduceRecord(key,event,topic);
+
+        var futureResponse = kafkaTemplate.send(record);
+
+        futureResponse.addCallback(new ListenableFutureCallback<>() {
+            @Override
+            public void onFailure(Throwable ex) {
+                handleFailure(key,  event, ex);
+            }
+
+            @Override
+            public void onSuccess(SendResult<Integer, OrderEvent> result) {
+                handleOk(key,event,result);
+            }
+        });
+
+        return futureResponse;
     }
 
     private ProducerRecord<Integer,OrderEvent> buildProduceRecord(Integer key, OrderEvent event, String topic) {

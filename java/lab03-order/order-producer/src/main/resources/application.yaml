@@ -9,6 +9,6 @@ spring:
         acks: all
         retries: 10
         client.id: order-lab-producer
-        compression.type: snappy
+        compression.type: lz4
     template:
       default-topic: weblog

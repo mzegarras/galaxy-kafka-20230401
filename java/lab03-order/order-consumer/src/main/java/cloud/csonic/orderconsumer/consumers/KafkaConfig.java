@@ -1,4 +1,4 @@
-package cloud.csonic.orderconsumer.config;
+package cloud.csonic.orderconsumer.consumers;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
