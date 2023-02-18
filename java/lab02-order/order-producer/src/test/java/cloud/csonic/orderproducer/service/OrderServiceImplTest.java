@@ -17,6 +17,7 @@ import org.springframework.util.concurrent.SettableListenableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
 
@@ -37,6 +38,7 @@ class OrderServiceImplTest {
         //PREPARACIÓN DE DATA
         var order = Order.builder()
                 .amout(100d)
+                .id("ord0001")
                 .customerId("CLI001")
                 .build();
 
@@ -65,6 +67,9 @@ class OrderServiceImplTest {
         assertEquals(1,result.getRecordMetadata().partition());
         assertEquals(1001,result.getProducerRecord().key());
 
+        var orderResult = result.getProducerRecord().value();
+        assertNotNull(orderResult);
+        assertEquals("ORD0001",orderResult.getOrder().getId());
 
         verify(kafkaTemplate).send(producerRecord);
         verifyNoMoreInteractions(kafkaTemplate);

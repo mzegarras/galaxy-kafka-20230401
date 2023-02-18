@@ -91,6 +91,8 @@ public class OrderServiceImpl implements OrderService {
     public ListenableFuture<SendResult<Integer, OrderEvent>> publishV4(OrderEvent orderEvent) {
         var key = orderEvent.getEventId();
 
+        orderEvent.getOrder().setId(orderEvent.getOrder().getId().toUpperCase());
+
         var record = buildRecord(key,orderEvent,topicName);
 
         //kafkaTemplate.send(record);
