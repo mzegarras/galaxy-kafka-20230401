@@ -1,0 +1,14 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:29092,localhost:29093,localhost:29094
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
+      #value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        acks: all
+        retries: 10
+        client.id: order-lab-producer
+        compression.type: snappy
+    template:
+      default-topic: weblog

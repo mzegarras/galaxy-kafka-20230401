@@ -1,0 +1,15 @@
+
+spring:
+  data.mongodb:
+    uri: mongodb://root:password1234@localhost:27017/orderdb?authSource=admin
+    database: ordersdb
+  kafka:
+    bootstrap-servers: localhost:29092,localhost:29093,localhost:29094
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: consumer02
+      properties:
+        spring.json.trusted.packages: '*'
+server:
+  port: 9080
