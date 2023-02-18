@@ -17,6 +17,10 @@ public class OrderConsumerManual implements AcknowledgingMessageListener<String,
     public void onMessage(ConsumerRecord<String, OrderEvent> consumerRecord, Acknowledgment acknowledgment) {
         log.info("commit manual record {}",consumerRecord);
         log.info("hacer algo");
-        acknowledgment.acknowledge(); //mensaje procesado
+
+        //Necesito el número que viene se valida contra la base de datos
+        // SI LA ORDEN NO EXISTE, LA REGISTRAN.
+        // SI LA EXISTE LA IGNORAN.
+        //acknowledgment.acknowledge(); //mensaje procesado
     }
 }
