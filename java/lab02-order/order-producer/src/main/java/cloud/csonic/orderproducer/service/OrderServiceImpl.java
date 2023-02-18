@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
 @Service
@@ -84,6 +85,29 @@ public class OrderServiceImpl implements OrderService {
             }
         });
 
+    }
+
+    @Override
+    public ListenableFuture<SendResult<Integer, OrderEvent>> publishV4(OrderEvent orderEvent) {
+        var key = orderEvent.getEventId();
+
+        var record = buildRecord(key,orderEvent,topicName);
+
+        var response = kafkaTemplate.send(record);
+        response.addCallback(new ListenableFutureCallback<SendResult<Integer, OrderEvent>>() {
+            @Override
+            public void onFailure(Throwable ex) {
+
+            }
+
+            @Override
+            public void onSuccess(SendResult<Integer, OrderEvent> result) {
+
+                handleOk(key,orderEvent,result);
+            }
+        });
+
+        return response;
     }
 
     private ProducerRecord<Integer,OrderEvent> buildRecord(Integer key, OrderEvent orderEvent, String topicName) {
