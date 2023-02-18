@@ -3,9 +3,11 @@ spring:
     bootstrap-servers: localhost:29092,localhost:29093,localhost:29094
     producer:
       key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
-      #value-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      # none, gzip, lz4, snappy, and zstd
-      compression-type: none
+      properties:
+        acks: 1
+        compression.type: lz4
+        client.id: order-lab-producer
+        retries: 10
     template:
       default-topic: orders

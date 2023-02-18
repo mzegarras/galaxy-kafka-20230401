@@ -19,7 +19,7 @@ public class OrderConsumer {
     @KafkaListener(topics = "orders",groupId = "consumerjava01")
     public void processMessage(OrderEvent orderEvent){
 
-        log.info("mensaje recibido");
+        log.info("mensaje recibido.");
 
         var entity = new OrderEntity();
         entity.setId(orderEvent.getOrder().getId());
