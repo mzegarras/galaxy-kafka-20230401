@@ -104,6 +104,11 @@ public class OrderConsumerIntegrationTests {
 
         var listado = orderRepository.findAll();
        assertEquals(1,listado.size());
+        listado.forEach(p->{
+            assertNotNull(p);
+            assertEquals("C001",p.getCustomerId());
+            assertEquals(101d,p.getAmout());
+        });
     }
 
 }

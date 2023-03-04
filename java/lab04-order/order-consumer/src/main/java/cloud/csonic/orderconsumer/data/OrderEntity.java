@@ -10,9 +10,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 public class OrderEntity {
     @Id
-    public String id;
-    public String customerId;
-    public double amout;
+    private String id;
+    private String customerId;
+    private double amout;
 
 
 }
