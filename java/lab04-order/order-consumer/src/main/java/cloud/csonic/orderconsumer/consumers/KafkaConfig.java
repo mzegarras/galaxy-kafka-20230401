@@ -18,7 +18,7 @@ public class KafkaConfig {
     @Bean
     public DefaultErrorHandler errorHandler(){
 
-        var fixedBackOff = new FixedBackOff(1000L, 10000);
+        var fixedBackOff = new FixedBackOff(1000L, 3);
         var errorHandler = new DefaultErrorHandler(fixedBackOff);
 
         errorHandler

@@ -75,7 +75,7 @@ public class OrderConsumerIntegrationTests {
     }
 
     @Test
-    void publishMessage() throws ExecutionException, InterruptedException {
+    void publishMessage_ok() throws ExecutionException, InterruptedException {
         endpointRegistry.getListenerContainers().forEach(p->{
             ContainerTestUtils.waitForAssignment(p,embeddedKafkaBroker.getPartitionsPerTopic());
         });
@@ -109,6 +109,39 @@ public class OrderConsumerIntegrationTests {
             assertEquals("C001",p.getCustomerId());
             assertEquals(101d,p.getAmout());
         });
+    }
+
+    @Test
+    void publishMessage_fail() throws ExecutionException, InterruptedException {
+        endpointRegistry.getListenerContainers().forEach(p->{
+            ContainerTestUtils.waitForAssignment(p,embeddedKafkaBroker.getPartitionsPerTopic());
+        });
+
+        var order = cloud.csonic.orderlibrary.domain.Order.builder()
+                .amout(100d)
+                .customerId("C001")
+                .amout(101d)
+                .build();
+
+        var orderEvent = OrderEvent
+                .builder()
+                .type(EventType.UPDATE)
+                .order(order)
+                .build();
+
+
+        kafkaTemplate.sendDefault(orderEvent).get();
+
+        CountDownLatch latch = new CountDownLatch(1);
+        latch.await(4, TimeUnit.SECONDS);
+
+        verify(orderConsumer,times(4)).onMessage(isA(ConsumerRecord.class),isA(Acknowledgment.class));
+        verify(orderService,times(4)).processEvent(orderEvent);
+
+        //orderService
+        var listado = orderRepository.findAll();
+        assertEquals(0,listado.size());
+
     }
 
 }
