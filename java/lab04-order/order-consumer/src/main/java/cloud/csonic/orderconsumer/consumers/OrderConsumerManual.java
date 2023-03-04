@@ -37,7 +37,7 @@ public class OrderConsumerManual implements AcknowledgingMessageListener<Integer
             topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE,
             //backoff = @Backoff(delay = 1000, multiplier = 5.0)
             backoff = @Backoff(delay = 5000)
-            //autoCreateTopics = "false",
+            //autoCreateTopics = "false"
            // exclude = {SerializationException.class, DeserializationException.class}
 
     )
