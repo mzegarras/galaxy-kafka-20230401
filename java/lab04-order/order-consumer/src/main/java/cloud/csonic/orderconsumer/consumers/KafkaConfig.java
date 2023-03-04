@@ -27,8 +27,8 @@ public class KafkaConfig {
                             ,ex.getMessage(), deliveryAttempt);
                 }));
 
-        //errorHandler.addRetryableExceptions(SocketTimeoutException.class);
-        //errorHandler.addNotRetryableExceptions(NullPointerException.class);
+        errorHandler.addRetryableExceptions(SocketTimeoutException.class);
+        errorHandler.addNotRetryableExceptions(NullPointerException.class);
 
         return  errorHandler;
     }
