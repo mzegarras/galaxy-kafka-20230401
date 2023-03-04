@@ -32,6 +32,15 @@ public class OrderConsumerManual implements AcknowledgingMessageListener<Integer
 
     @Override
     @KafkaListener(topics = {"orders"})
+    @RetryableTopic(
+            attempts = "4",
+            topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE,
+            backoff = @Backoff(delay = 10000, multiplier = 5.0)
+            //backoff = @Backoff(delay = 5000),
+            //autoCreateTopics = "false",
+           // exclude = {SerializationException.class, DeserializationException.class}
+
+    )
     public void onMessage(ConsumerRecord<Integer, OrderEvent> consumerRecord, Acknowledgment acknowledgment) {
         log.info("ConsumerRecord Manual: {}",consumerRecord);
         var orderEvent = consumerRecord.value();
