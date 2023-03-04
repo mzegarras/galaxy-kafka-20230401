@@ -183,6 +183,7 @@ En la clase KafkaConfig copiar.
 * Configurar: 
   * spring.kafka.ack-mode: manual
   * spring.kafka.consumer.auto-offset-reset: latest
+  * enable.auto.commit: false
 
 ### 9.2:  Crear topics
   ```
