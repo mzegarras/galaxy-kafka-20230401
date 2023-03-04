@@ -1,5 +1,6 @@
 package cloud.csonic.orderconsumer;
 
+import cloud.csonic.orderconsumer.consumers.OrderConsumerManual;
 import cloud.csonic.orderconsumer.respository.OrderRepository;
 import cloud.csonic.orderconsumer.service.OrderService;
 import cloud.csonic.orderlibrary.event.EventType;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.ContainerTestUtils;
@@ -48,7 +50,7 @@ public class OrderConsumerIntegrationTests {
     KafkaListenerEndpointRegistry endpointRegistry;
 
     @SpyBean
-    OrderConsumer orderConsumer;
+    OrderConsumerManual orderConsumer;
 
     @SpyBean
     OrderService orderService;
@@ -92,10 +94,11 @@ public class OrderConsumerIntegrationTests {
 
 
         kafkaTemplate.sendDefault(orderEvent).get();
+
         CountDownLatch latch = new CountDownLatch(1);
         latch.await(3, TimeUnit.SECONDS);
 
-        verify(orderConsumer,times(1)).onMessage(isA(ConsumerRecord.class));
+        verify(orderConsumer,times(1)).onMessage(isA(ConsumerRecord.class),isA(Acknowledgment.class));
         verify(orderService,times(1)).processEvent(orderEvent);
         //orderService
 
