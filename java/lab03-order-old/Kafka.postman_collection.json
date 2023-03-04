@@ -1,0 +1,148 @@
+{
+	"info": {
+		"_postman_id": "20889101-4f0f-4909-80af-604d8b392316",
+		"name": "Kafka",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "100328"
+	},
+	"item": [
+		{
+			"name": "1-CreateOrder-old",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"order\":{\n        \"id\":\"{{orderId}}\",\n        \"customerId\":\"{{randomCustomerId}}\",\n        \"amout\":{{random_amount}}\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1-UpdateOrder-old",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"eventId\":\"{{orderId}}\",\n    \"order\":{\n        \"id\":\"{{orderId}}\",\n        \"customerId\":\"{{randomCustomerId}}\",\n        \"amout\":{{random_amount}}\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1-CreateOrder",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"order\":{\n        \"id\":\"{{orderId}}\",\n        \"customerId\":\"{{randomCustomerId}}\",\n        \"amout\":{{random_amount}}\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2-UpdateOrder",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"eventId\": {{orderId}},\n    \"order\":{\n        \"id\":\"{{orderId}}\",\n        \"customerId\":\"{{randomCustomerId}}\",\n        \"amout\":{{random_amount}}\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"var customerId = [\"CLI00001\", \"CLI00002\", \"CLI00003\",\"CLI00004\",\"CLI00005\",\"CLI00006\",\"CLI00007\"]",
+					"var randomCustomerId = customerId[_.random(customerId.length - 1)];",
+					"pm.environment.set(\"randomCustomerId\",randomCustomerId)",
+					"",
+					"pm.environment.set(\"orderId\", _.random(1, 1000))",
+					"",
+					"pm.environment.set(\"random_amount\", _.random(1, 500))"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
