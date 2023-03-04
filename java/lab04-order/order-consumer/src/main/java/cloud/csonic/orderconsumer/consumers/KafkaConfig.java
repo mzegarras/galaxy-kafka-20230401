@@ -15,7 +15,23 @@ import java.net.SocketTimeoutException;
 @Slf4j
 public class KafkaConfig {
 
+    @Bean
+    public DefaultErrorHandler errorHandler(){
 
+        var fixedBackOff = new FixedBackOff(1000L, 10000);
+        var errorHandler = new DefaultErrorHandler(fixedBackOff);
+
+        errorHandler
+                .setRetryListeners(((record, ex, deliveryAttempt) -> {
+                    log.info("Error Record intento Listener, Exception : {} , deliveryAttempt : {} "
+                            ,ex.getMessage(), deliveryAttempt);
+                }));
+
+        //errorHandler.addRetryableExceptions(SocketTimeoutException.class);
+        //errorHandler.addNotRetryableExceptions(NullPointerException.class);
+
+        return  errorHandler;
+    }
 
 
 }
