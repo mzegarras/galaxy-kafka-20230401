@@ -35,8 +35,8 @@ public class OrderConsumerManual implements AcknowledgingMessageListener<Integer
     @RetryableTopic(
             attempts = "4",
             topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE,
-            backoff = @Backoff(delay = 10000, multiplier = 5.0)
-            //backoff = @Backoff(delay = 5000),
+            //backoff = @Backoff(delay = 1000, multiplier = 5.0)
+            backoff = @Backoff(delay = 5000)
             //autoCreateTopics = "false",
            // exclude = {SerializationException.class, DeserializationException.class}
 
@@ -46,6 +46,11 @@ public class OrderConsumerManual implements AcknowledgingMessageListener<Integer
         var orderEvent = consumerRecord.value();
         orderService.processEvent(orderEvent);
         acknowledgment.acknowledge(); //mensaje procesado ok
+    }
+
+    @DltHandler
+    public void handleDlt(OrderEvent message, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
+        log.info("*****Message****: {} handled by dlq topic: {}", message, topic);
     }
 
 
