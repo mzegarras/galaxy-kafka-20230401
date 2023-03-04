@@ -187,8 +187,6 @@ En la clase KafkaConfig copiar.
 
 ### 9.2:  Crear topics
   ```
-  docker-compose down -v
-  docker-compose up -d
   docker exec --interactive --tty kafka01 bash
   
   kafka-topics --bootstrap-server localhost:9092 \
@@ -258,6 +256,9 @@ kafka-consumer-groups --bootstrap-server localhost:9092 --group consumer02 --res
 ```
 ## 10: Non-Blocking Retry
   ```
+  docker-compose down -v
+  docker-compose up -d
+  
   docker exec --interactive --tty kafka01 bash
   
   kafka-topics --bootstrap-server localhost:9092 \
